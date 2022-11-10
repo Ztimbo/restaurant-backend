@@ -41,11 +41,29 @@ services:
     ports:
       - 9999:8080
 
-  apache:
-    image: httpd
-    container_name: apache
-    hostname: apache
+  maven:
+    image: maven
+    container_name: maven
+    hostname: maven
     ports:
       - 9998:80
+
+  git:
+    image: gitlab/gitlab-ee
+    container_name: git
+    hostname: git
+    ports:
+      - 4434:443
+      - 8084:80
+      - 22:22
+    restart: always
     volumes:
-    - ./website:/usr/local/apache2/htdocs
+      - '$GITLAB_HOME/config:/etc/gitlab'
+      - '$GITLAB_HOME/logs:/var/log/gitlab'
+      - '$GITLAB_HOME/data:/var/opt/gitlab'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.example.com'
+        # Add any other gitlab.rb configuration here, each on its own line
+      
+    shm_size: '256m'
