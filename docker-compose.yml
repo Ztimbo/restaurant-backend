@@ -40,3 +40,12 @@ services:
     hostname: jenkins
     ports:
       - 9999:8080
+
+  apache:
+    image: httpd
+    container_name: apache
+    hostname: apache
+    ports:
+      - 9998:80
+    volumes:
+    - ./website:/usr/local/apache2/htdocs
