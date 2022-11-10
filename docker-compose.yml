@@ -1,0 +1,42 @@
+# Use root/example as user/password credentials
+version: '3.8'
+
+services:
+  # Database - Mongo DB
+  mongo:
+    image: mongo
+    restart: always
+    container_name: db
+    ports:
+      - 27017:27017
+    hostname: db
+    #environment:
+      #MONGO_INITDB_ROOT_USERNAME: admin
+      #MONGO_INITDB_ROOT_PASSWORD: restaurant_123?
+    #volumes:
+      #- ./db-scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  # Database Manager
+  mongo-express:
+    image: mongo-express
+    container_name: db-express
+    hostname: db-express
+    ports:
+      - 8099:8081
+    depends_on:
+      - mongo
+    #environment:
+      #ME_CONFIG_BASICAUTH_USERNAME: admin
+      #ME_CONFIG_BASICAUTH_PASSWORD: restaurant_123?
+      #ME_CONFIG_MONGODB_PORT: 27017
+      #ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      #ME_CONFIG_MONGODB_ADMINPASSWORD: restaurant_123?
+    links:
+      - mongo
+  
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
+    hostname: jenkins
+    ports:
+      - 9999:8080
