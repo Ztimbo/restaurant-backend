@@ -9,7 +9,7 @@ var errorMessage = require('../helpers/error-message');
 var user = require('../models/user');
 var jwt = require('../services/jwt');
 
-function addUser(req, res) {
+async function addUser(req, res) {
     var newUser = new user();
     var params = req.body;
 
@@ -17,6 +17,7 @@ function addUser(req, res) {
     newUser.surname = params.surname;
     newUser.username = params.username;
     newUser.role = params.role;
+    newUser.active = true;
 
     if(params.password) {
         bcrypt.hash(params.password, null, null, (err, hash) => {
@@ -44,7 +45,7 @@ function addUser(req, res) {
     }
 }
 
-function updateUser(req, res) {
+async function updateUser(req, res) {
     var userId = req.params.id;
     var update = req.body;
     
@@ -61,7 +62,7 @@ function updateUser(req, res) {
     });
 }
 
-function getUser(req, res) {
+async function getUser(req, res) {
     var userId = req.params.id;
 
     user.findById(new ObjectId(userId), (err, user) => {
@@ -77,7 +78,7 @@ function getUser(req, res) {
     }).populate({path: 'role'});
 }
 
-function getAllUsers(req, res) {
+async function getAllUsers(req, res) {
     if(req.params.page) {
         var page = req.params.page;
     } else {
@@ -86,7 +87,7 @@ function getAllUsers(req, res) {
     
     var itemsPerPage = 3;
 
-    user.find().populate({path: 'role'}).sort('name').paginate(page, itemsPerPage, function(err, users, total) {
+    user.find().populate('role', 'name').sort('name').select('name surname').paginate(page, itemsPerPage, async function(err, users, total) {
         if(err) {
             res.status(500).send({message: `${errorMessage[500].SERVER_ERROR}: ${err.message}`});
         } else {
@@ -99,12 +100,12 @@ function getAllUsers(req, res) {
     });
 }
 
-function login(req, res) {
+async function login(req, res) {
     var params = req.body;
     var username = params.username;
     var password = params.password;
 
-    user.findOne({username: username.toLowerCase()}, (err, user) => {
+    user.findOne({username: username.toLowerCase(), active: true}, (err, user) => {
         if(err) {
             res.status(500).send({message: `${errorMessage[500].SERVER_ERROR}: ${err.message}`});
         } else {

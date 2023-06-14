@@ -8,6 +8,7 @@ const userSchema = schema({
     surname: String,
     username: String,
     password: String,
+    active: Boolean,
     role: { type: schema.Types.ObjectId, ref: 'Role' }
 });
 

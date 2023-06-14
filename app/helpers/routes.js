@@ -1,7 +1,8 @@
 const prefixRoutes = {
     API: '/api',
     USER: '/user',
-    ROLE: '/role'
+    ROLE: '/role',
+    PRODUCT: '/product'
 }
 
 module.exports = prefixRoutes;

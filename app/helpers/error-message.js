@@ -13,6 +13,18 @@ const errorMessage = {
             NOT_UPDATED: "Usuario no actualizado",
             USERS_NOT_FOUND: 'Usuarios no encontrados'
         },
+        ROLE: {
+            NOT_SAVED: "Rol no guardado",
+            ROLE_NOT_FOUND: "Rol no encontrado",
+            NOT_UPDATED: "Rol no actualizado",
+            ROLES_NOT_FOUND: 'Roles no encontrados'
+        },
+        PRODUCT: {
+            NOT_SAVED: "Producto no guardado",
+            PRODUCT_NOT_FOUND: "Producto no encontrado",
+            NOT_UPDATED: "Producto no actualizado",
+            PRODUCTS_NOT_FOUND: 'Productos no encontrados'
+        },
         REQUEST: {
             INVALID_TOKEN: "Token invalido"
         }
