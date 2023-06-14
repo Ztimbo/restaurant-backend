@@ -41,40 +41,40 @@ services:
     #ports:
       #- 9999:8080
 
-  apache:
-    image: httpd
-    container_name: apache
-    hostname: apache
-    ports:
-      - 9998:80
+  #apache:
+    #image: httpd
+    #container_name: apache
+    #hostname: apache
+    #ports:
+      #- 9998:80
 
-  git:
-    image: gitlab/gitlab-ee
-    container_name: git
-    hostname: git
-    ports:
-      - 4434:443
-      - 8084:80
-      - 22:22
-    restart: always
-    volumes:
+  #git:
+    #image: gitlab/gitlab-ee
+    #container_name: git
+    #hostname: git
+    #ports:
+      #- 4434:443
+      #- 8084:80
+      #- 22:22
+    #restart: always
+    #volumes:
       #- '$GITLAB_HOME/config:/etc/gitlab'
       #- '$GITLAB_HOME/logs:/var/log/gitlab'
       #- '$GITLAB_HOME/data:/var/opt/gitlab'
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./config:/etc/gitlab-runner
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.example.com'
+      #- /var/run/docker.sock:/var/run/docker.sock
+      #- ./config:/etc/gitlab-runner
+    #environment:
+      #GITLAB_OMNIBUS_CONFIG: |
+        #external_url 'https://gitlab.example.com'
         # Add any other gitlab.rb configuration here, each on its own line
       
-    shm_size: '256m'
+    #shm_size: '256m'
   
-  gitlab-runner:
-    container_name: gitlab-runner
-    image: gitlab/gitlab-runner:latest
-    hostname: gitlab-runner
-    restart: always
-    volumes:
-      - /srv/gitlab-runner/config:/etc/gitlab-runner
-      - /var/run/docker.sock:/var/run/docker.sock
+  #gitlab-runner:
+    #container_name: gitlab-runner
+    #image: gitlab/gitlab-runner:latest
+    #hostname: gitlab-runner
+    #restart: always
+    #volumes:
+      #- /srv/gitlab-runner/config:/etc/gitlab-runner
+      #- /var/run/docker.sock:/var/run/docker.sock
