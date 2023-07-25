@@ -11,5 +11,7 @@ var api = express.Router();
 
 api.post(`${prefix.ORDER}/save`, md_auth.ensureAuth, orderController.addOrder);
 api.get(`${prefix.ORDER}/get-order/:id`, md_auth.ensureAuth, orderController.getOrder);
+api.get(`${prefix.ORDER}/get-active-orders/:page?`, md_auth.ensureAuth, orderController.getActiveOrders);
+api.put(`${prefix.ORDER}/update/:id`, md_auth.ensureAuth, orderController.updateOrder);
 
 module.exports = api;
