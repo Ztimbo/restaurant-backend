@@ -43,7 +43,48 @@ async function getOrder(req, res) {
     }).populate('table', 'number').populate('products', 'name price');
 }
 
+async function getActiveOrders(req, res) {
+    if(req.params.page) {
+        var page = req.params.page;
+    } else {
+        var page = 1;
+    }
+    
+    var itemsPerPage = 3;
+
+    order.find({active: 'true'}).populate('table', 'number').populate('products', 'name price').paginate(page, itemsPerPage, function(err, orders, total) {
+        if(err) {
+            res.status(500).send({message: `${errorMessage[500].SERVER_ERROR}: ${err.message}`});
+        } else {
+            if(!orders) {
+                res.status(404).send({message: `${errorMessage[404].ORDER.ORDERS_NOT_FOUND}`});
+            } else {
+                return res.status(200).send({pages: total, orders: orders});
+            }
+        }
+    });
+}
+
+async function updateOrder(req, res) {
+    var orderId = req.params.id;
+    var update = req.body;
+    
+    order.findByIdAndUpdate(orderId, update, (err, orderUpdated) => {
+        if(err) {
+            res.status(500).send({message: `${errorMessage[500].SERVER_ERROR}: ${err.message}`});
+        } else {
+            if(!orderUpdated) {
+                res.status(404).send({message: `${errorMessage[404].ORDER.NOT_UPDATED}`});
+            } else {
+                res.status(200).send({order: orderUpdated});
+            }
+        }
+    });
+}
+
 module.exports = {
     addOrder,
-    getOrder
+    getOrder,
+    getActiveOrders,
+    updateOrder
 };
